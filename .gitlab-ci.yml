@@ -11,7 +11,7 @@ variables:
 
 before_script:
   - apt-get update
-  - apt-get install -y --no-install-recommends make gcc gcc-avr avr-libc binutils-avr
+  - apt-get install -y --no-install-recommends build-essential libc6-dev make gcc gcc-avr avr-libc binutils-avr
 
 unit_tests:
   stage: test
