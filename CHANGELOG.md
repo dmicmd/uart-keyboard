@@ -1,0 +1,30 @@
+# Changelog
+
+Все заметные изменения проекта документируются в этом файле.
+
+Формат основан на Keep a Changelog, версиях SemVer.
+
+## [Unreleased]
+
+### Added
+- Модульная архитектура (core + AVR HAL + composition root).
+- LUFA-style ring buffer с абстракцией critical section.
+- Core-модули `keyboard_logic`, `tx_scheduler`, `rx_decoder`.
+- Host unit tests для core-компонентов.
+- Unit test для `tx_scheduler`.
+- Orchestration-слой `app_runtime` и unit test проверки ретрая TX без потери данных.
+- GitLab CI/CD pipeline для тестов и сборки firmware artifacts.
+- Пакет проектной документации в `docs/`:
+  - SRS
+  - SRSw
+  - Architecture / Design
+  - ICD
+  - Traceability Matrix
+  - Test Plan
+  - Safety / Risk Analysis
+  - Configuration Management
+  - Pin Functional Specification
+  - Documents Index
+
+### Changed
+- Монолитный `app.c` заменён модульной структурой.
