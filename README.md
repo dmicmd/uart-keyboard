@@ -15,7 +15,8 @@
 
 - `src/core/` — платформенно-независимая логика (`keyboard_logic`, `tx_scheduler`, `rx_decoder`).
 - `src/platform/avr/` — AVR HAL (GPIO/UART/Timer/ISR).
-- `src/main.c` — композиция зависимостей.
+- `src/main.c` — минимальная точка входа (инициализация + бесконечный цикл).
+- `src/app_runtime.c` — orchestration-слой приложения (tick без бизнес-логики в `main`).
 - `src/ring_buffer.c` — кольцевой буфер с critical-section hooks.
 - `tests/` — host unit tests.
 

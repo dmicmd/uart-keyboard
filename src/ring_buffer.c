@@ -63,3 +63,22 @@ bool ring_buffer_pop(ring_buffer_t *rb, uint8_t *value)
     }
     return true;
 }
+
+bool ring_buffer_peek(ring_buffer_t *rb, uint8_t *value)
+{
+    uint8_t irq_state = rb->cs.enter ? rb->cs.enter(rb->cs.ctx) : 0;
+
+    if (ring_buffer_is_empty(rb)) {
+        if (rb->cs.exit) {
+            rb->cs.exit(rb->cs.ctx, irq_state);
+        }
+        return false;
+    }
+
+    *value = rb->buffer[rb->tail];
+
+    if (rb->cs.exit) {
+        rb->cs.exit(rb->cs.ctx, irq_state);
+    }
+    return true;
+}

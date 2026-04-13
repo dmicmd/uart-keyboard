@@ -12,6 +12,7 @@
 - Core-модули `keyboard_logic`, `tx_scheduler`, `rx_decoder`.
 - Host unit tests для core-компонентов.
 - Unit test для `tx_scheduler`.
+- Orchestration-слой `app_runtime` и unit test проверки ретрая TX без потери данных.
 - GitLab CI/CD pipeline для тестов и сборки firmware artifacts.
 - Пакет проектной документации в `docs/`:
   - SRS

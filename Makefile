@@ -9,7 +9,7 @@ MCU=atmega128a
 F_CPU=7372800UL
 AVR_CFLAGS=-std=c11 -mmcu=$(MCU) -DF_CPU=$(F_CPU) -Os -Wall -Wextra -Werror -Iinclude
 
-CORE_SOURCES=src/ring_buffer.c src/core/keyboard_logic.c src/core/tx_scheduler.c src/core/rx_decoder.c
+CORE_SOURCES=src/ring_buffer.c src/core/keyboard_logic.c src/core/tx_scheduler.c src/core/rx_decoder.c src/app_runtime.c
 AVR_SOURCES=$(CORE_SOURCES) src/platform/avr/hal_avr.c src/main.c
 
 .PHONY: all avr clean test
@@ -25,11 +25,12 @@ build/$(APP).elf: $(AVR_SOURCES)
 build/$(APP).hex: build/$(APP).elf
 	$(AVR_OBJCOPY) -O ihex -R .eeprom $< $@
 
-test: build/test_ring_buffer build/test_keyboard_logic build/test_rx_decoder build/test_tx_scheduler
+test: build/test_ring_buffer build/test_keyboard_logic build/test_rx_decoder build/test_tx_scheduler build/test_app_runtime
 	./build/test_ring_buffer
 	./build/test_keyboard_logic
 	./build/test_rx_decoder
 	./build/test_tx_scheduler
+	./build/test_app_runtime
 
 build/test_ring_buffer: tests/test_ring_buffer.c src/ring_buffer.c include/ring_buffer.h include/critical_section.h
 	@mkdir -p build
@@ -46,6 +47,10 @@ build/test_rx_decoder: tests/test_rx_decoder.c src/core/rx_decoder.c include/rx_
 build/test_tx_scheduler: tests/test_tx_scheduler.c src/core/tx_scheduler.c include/tx_scheduler.h
 	@mkdir -p build
 	$(HOST_CC) $(HOST_CFLAGS) tests/test_tx_scheduler.c src/core/tx_scheduler.c -o $@
+
+build/test_app_runtime: tests/test_app_runtime.c src/app_runtime.c src/ring_buffer.c src/core/keyboard_logic.c src/core/tx_scheduler.c src/core/rx_decoder.c
+	@mkdir -p build
+	$(HOST_CC) $(HOST_CFLAGS) tests/test_app_runtime.c src/app_runtime.c src/ring_buffer.c src/core/keyboard_logic.c src/core/tx_scheduler.c src/core/rx_decoder.c -o $@
 
 clean:
 	rm -rf build

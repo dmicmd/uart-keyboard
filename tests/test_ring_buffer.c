@@ -41,6 +41,7 @@ int main(void)
     assert(!ring_buffer_push(&rb, 4));
 
     uint8_t out = 0;
+    assert(ring_buffer_peek(&rb, &out) && out == 1);
     assert(ring_buffer_pop(&rb, &out) && out == 1);
     assert(ring_buffer_pop(&rb, &out) && out == 2);
     assert(ring_buffer_pop(&rb, &out) && out == 3);

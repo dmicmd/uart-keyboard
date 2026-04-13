@@ -11,16 +11,19 @@
 
 ## 2. Слои
 
-1. **Application composition** (`src/main.c`)
+1. **Application bootstrap** (`src/main.c`)
+   - только инициализирует HAL/app runtime;
+   - не содержит бизнес-логики.
+2. **Application runtime** (`src/app_runtime.c`)
    - связывает HAL, core и очереди;
-   - управляет циклом обработки.
-2. **Core** (`src/core/*`)
+   - управляет вызовами задач в `tick`.
+3. **Core** (`src/core/*`)
    - `keyboard_logic`: debounce/active/repeat;
    - `tx_scheduler`: pacing/keepalive;
    - `rx_decoder`: декодирование команд LED.
-3. **Infrastructure**
+4. **Infrastructure**
    - `ring_buffer` + `critical_section` abstraction.
-4. **Platform HAL** (`src/platform/avr/hal_avr.c`)
+5. **Platform HAL** (`src/platform/avr/hal_avr.c`)
    - GPIO, UART, timer, ISR, millis.
 
 ## 3. Потоки данных
