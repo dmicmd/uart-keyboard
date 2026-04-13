@@ -1,49 +1,55 @@
-# UART keyboard (ATmega128A)
+# UART keyboard firmware (ATmega128A)
 
-Проект разделён на платформенно-независимую логику и AVR HAL с умеренным DI.
+Прошивка клавиатурного контроллера для AVR 8-bit с UART-протоколом событий клавиш и управления LED.
 
-## Структура
+## Возможности
 
-- `src/core/*` — кросс-тестируемая бизнес-логика клавиатуры, RX decoder и расписание TX.
-- `src/ring_buffer.c` + `include/ring_buffer.h` — кольцевой буфер в стиле LUFA.
-- `src/platform/avr/hal_avr.c` — работа с регистрами AVR, ISR, GPIO/UART/Timer.
+- Опрос 12 кнопок с debounce.
+- Автоповтор активной клавиши.
+- Передача событий по UART.
+- Keepalive при отсутствии событий.
+- Приём UART-команд управления 12 LED-каналами.
+- Разделение на platform HAL и testable core.
+
+## Архитектура (кратко)
+
+- `src/core/` — платформенно-независимая логика (`keyboard_logic`, `tx_scheduler`, `rx_decoder`).
+- `src/platform/avr/` — AVR HAL (GPIO/UART/Timer/ISR).
 - `src/main.c` — композиция зависимостей.
-- `tests/*` — host unit tests (gcc) для core-компонентов.
+- `src/ring_buffer.c` — кольцевой буфер с critical-section hooks.
+- `tests/` — host unit tests.
 
-## DI подход
+## Требования к окружению
 
-- Платформенные функции передаются через `platform_hal_t`.
-- Логика клавиатуры получает callbacks `read_key/on_event`.
-- Передатчик получает `send` callback.
-- RingBuffer получает `critical_section_ops_t` с `enter/exit` (в AVR: cli/SREG restore).
+- Для host-тестов: `gcc`, `make`.
+- Для AVR сборки: `avr-gcc`, `avr-libc`, `binutils-avr`.
 
-## Сборка локально
+## Сборка и проверка
 
 ```bash
-make test        # host tests
-make avr         # firmware .elf/.hex
+make test   # host unit tests
+make avr    # build/uart_keyboard.elf и build/uart_keyboard.hex
 ```
 
-## GitLab CI/CD
+## CI/CD
 
-Пайплайн в `.gitlab-ci.yml`:
+GitLab pipeline (`.gitlab-ci.yml`):
+- `unit_tests` → `make test`
+- `build_firmware` → `make avr` + artifacts (`.elf`, `.hex`)
 
-1. `unit_tests` — запускает `make test`.
-2. `build_firmware` — собирает `.elf` и `.hex`, сохраняет artifacts.
+Runner tag: `docker`.
 
-Оба job запускаются на раннере с тегом `docker`.
+## Документация
 
-## Документация процесса и требований
+Документы проекта находятся в `docs/`. Рекомендуемая точка входа: `docs/DOCUMENTS_INDEX.md`.
 
-В `docs/` добавлены проектные документы:
+Ключевые документы:
+- SRS / SRSw
+- Architecture / ICD
+- Pin Functional Specification
+- Traceability Matrix
+- Test Plan
+- Safety / Risk Analysis
+- Configuration Management
 
-- `SRS.md`
-- `SRSw.md`
-- `ARCHITECTURE.md`
-- `ICD.md`
-- `TRACEABILITY_MATRIX.md`
-- `TEST_PLAN.md`
-- `SAFETY_RISK_ANALYSIS.md`
-- `CONFIGURATION_MANAGEMENT.md`
-
-История изменений ведётся в `CHANGELOG.md`.
+История изменений: `CHANGELOG.md`.

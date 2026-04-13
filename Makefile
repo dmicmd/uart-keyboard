@@ -25,10 +25,11 @@ build/$(APP).elf: $(AVR_SOURCES)
 build/$(APP).hex: build/$(APP).elf
 	$(AVR_OBJCOPY) -O ihex -R .eeprom $< $@
 
-test: build/test_ring_buffer build/test_keyboard_logic build/test_rx_decoder
+test: build/test_ring_buffer build/test_keyboard_logic build/test_rx_decoder build/test_tx_scheduler
 	./build/test_ring_buffer
 	./build/test_keyboard_logic
 	./build/test_rx_decoder
+	./build/test_tx_scheduler
 
 build/test_ring_buffer: tests/test_ring_buffer.c src/ring_buffer.c include/ring_buffer.h include/critical_section.h
 	@mkdir -p build
@@ -41,6 +42,10 @@ build/test_keyboard_logic: tests/test_keyboard_logic.c src/core/keyboard_logic.c
 build/test_rx_decoder: tests/test_rx_decoder.c src/core/rx_decoder.c include/rx_decoder.h
 	@mkdir -p build
 	$(HOST_CC) $(HOST_CFLAGS) tests/test_rx_decoder.c src/core/rx_decoder.c -o $@
+
+build/test_tx_scheduler: tests/test_tx_scheduler.c src/core/tx_scheduler.c include/tx_scheduler.h
+	@mkdir -p build
+	$(HOST_CC) $(HOST_CFLAGS) tests/test_tx_scheduler.c src/core/tx_scheduler.c -o $@
 
 clean:
 	rm -rf build

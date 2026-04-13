@@ -11,6 +11,7 @@
 - LUFA-style ring buffer с абстракцией critical section.
 - Core-модули `keyboard_logic`, `tx_scheduler`, `rx_decoder`.
 - Host unit tests для core-компонентов.
+- Unit test для `tx_scheduler`.
 - GitLab CI/CD pipeline для тестов и сборки firmware artifacts.
 - Пакет проектной документации в `docs/`:
   - SRS
@@ -21,6 +22,8 @@
   - Test Plan
   - Safety / Risk Analysis
   - Configuration Management
+  - Pin Functional Specification
+  - Documents Index
 
 ### Changed
 - Монолитный `app.c` заменён модульной структурой.
