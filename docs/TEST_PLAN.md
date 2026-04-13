@@ -13,6 +13,7 @@
 - **Unit (host gcc):** `tests/test_*`.
 - **Build verification:** `make avr`.
 - **CI verification:** jobs `unit_tests`, `build_firmware`.
+- **HIL smoke:** `hil/tests/hil_smoke.py` (ручной/плановый запуск на стенде).
 
 ## 3. Набор unit-тестов
 
@@ -60,3 +61,4 @@
 ## 5. План расширения
 
 - Добавить интеграционный тест полного TX пути (event → UART byte).
+- Добавить HIL тесты управления входами клавиш и проверки LED-линий.

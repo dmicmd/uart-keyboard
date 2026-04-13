@@ -54,3 +54,12 @@ Runner tag: `docker`.
 - Configuration Management
 
 История изменений: `CHANGELOG.md`.
+
+## HIL (Hardware-in-the-Loop)
+
+Базовый каркас HIL находится в `hil/`:
+- smoke-тест: `hil/tests/hil_smoke.py`
+- запуск в Windows: `hil/scripts/windows/run_hil.ps1`
+- запуск в Linux: `hil/scripts/linux/run_hil.sh`
+
+См. `hil/README.md` для переменных окружения и сценариев запуска.

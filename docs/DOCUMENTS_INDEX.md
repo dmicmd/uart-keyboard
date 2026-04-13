@@ -15,6 +15,7 @@
 | `TEST_PLAN.md` | Стратегия, покрытие и критерии приёмки | QA, разработчики |
 | `SAFETY_RISK_ANALYSIS.md` | Риски, меры снижения и остаточные риски | Tech lead, QA |
 | `CONFIGURATION_MANAGEMENT.md` | Версионирование, baseline, change control | Release/DevOps, разработчики |
+| `../hil/README.md` | HIL стенд, запуск smoke-тестов, переменные окружения | QA, firmware, lab инженеры |
 | `../CHANGELOG.md` | История изменений по релизам | Все участники проекта |
 
 ## Рекомендуемый порядок чтения

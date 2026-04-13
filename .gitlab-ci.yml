@@ -1,6 +1,7 @@
 stages:
   - test
   - build
+  - hil
 
 default:
   tags:
@@ -28,4 +29,20 @@ build_firmware:
     paths:
       - build/uart_keyboard.elf
       - build/uart_keyboard.hex
+    expire_in: 1 week
+
+hil_smoke:
+  stage: hil
+  image: python:3.11-slim
+  tags:
+    - hil
+  when: manual
+  allow_failure: true
+  script:
+    - pip install --no-cache-dir pyserial
+    - python hil/tests/hil_smoke.py
+  artifacts:
+    when: always
+    paths:
+      - hil/artifacts/
     expire_in: 1 week
